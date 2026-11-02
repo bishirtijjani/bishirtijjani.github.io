@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bishir Tijjani — Full-Stack Engineer</title>
+  <meta name="description" content="Full-stack engineer building production web, mobile, and AI systems. React, Node.js, React Native, Python, PostgreSQL, MongoDB." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --bg-soft: #111827;
+      --bg-card: #161e2e;
+      --bg-card-hover: #1c2638;
+      --border: #1f2a3d;
+      --border-soft: #263347;
+      --text: #e6edf3;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #22d3ee;
+      --accent-2: #818cf8;
+      --accent-glow: rgba(34, 211, 238, 0.15);
+      --accent-glow-2: rgba(129, 140, 248, 0.12);
+      --success: #34d399;
+      --warning: #fbbf24;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+      --maxw: 1180px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Background grid + glow */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(900px 500px at 10% -10%, var(--accent-glow), transparent 60%),
+        radial-gradient(800px 500px at 90% 10%, var(--accent-glow-2), transparent 60%),
+        linear-gradient(var(--bg) 1px, transparent 1px) 0 0 / 40px 40px,
+        linear-gradient(90deg, var(--bg) 1px, transparent 1px) 0 0 / 40px 40px;
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+
+    a { color: var(--accent); text-decoration: none; transition: color .2s; }
+    a:hover { color: #67e8f9; }
+
+    .container { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    /* Nav */
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(11, 15, 25, 0.7);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .inner {
+      max-width: var(--maxw); margin: 0 auto; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .brand { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
+    .brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { color: var(--text-muted); font-size: 0.92rem; font-weight: 500; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #0b0f19 !important; padding: 8px 16px; border-radius: 999px;
+      font-weight: 600; font-size: 0.88rem;
+    }
+    .nav-cta:hover { opacity: 0.9; color: #0b0f19 !important; }
+
+    /* Hero */
+    .hero { padding: 110px 0 80px; }
+    .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 60px; align-items: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+      color: var(--accent); background: var(--accent-glow);
+      border: 1px solid rgba(34,211,238,0.25); padding: 6px 14px;
+      border-radius: 999px; margin-bottom: 22px;
+    }
+    .eyebrow::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px var(--success); }
+    h1 {
+      font-size: clamp(2.4rem, 5.5vw, 4rem);
+      font-weight: 800; letter-spacing: -0.035em; line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    h1 .grad {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero p.lede {
+      font-size: 1.15rem; color: var(--text-muted); max-width: 560px;
+      margin-bottom: 32px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+      transition: transform .15s, box-shadow .2s, background .2s;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #0b0f19;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px var(--accent-glow); color: #0b0f19; }
+    .btn-ghost {
+      background: var(--bg-card); color: var(--text); border-color: var(--border);
+    }
+    .btn-ghost:hover { background: var(--bg-card-hover); transform: translateY(-1px); }
+
+    .hero-card {
+      background: linear-gradient(160deg, var(--bg-card), var(--bg-soft));
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 28px; box-shadow: var(--shadow);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.86rem;
+    }
+    .hero-card .row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed var(--border-soft); }
+    .hero-card .row:last-child { border-bottom: none; }
+    .hero-card .k { color: var(--text-dim); }
+    .hero-card .v { color: var(--accent); }
+    .hero-card .v.str { color: var(--success); }
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 28px; }
+    .stat { background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; }
+    .stat .n { font-size: 1.6rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em; }
+    .stat .l { font-size: 0.78rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* Sections */
+    section { padding: 90px 0; }
+    .section-head { margin-bottom: 48px; }
+    .section-head .tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+      color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px;
+    }
+    .section-head h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700;
+      letter-spacing: -0.025em; line-height: 1.15;
+    }
+    .section-head p { color: var(--text-muted); margin-top: 12px; max-width: 620px; }
+
+    /* About */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .about-text p { color: var(--text-muted); margin-bottom: 16px; font-size: 1.05rem; }
+    .about-text p strong { color: var(--text); font-weight: 600; }
+    .about-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+    }
+    .about-card h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 16px; }
+    .about-card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .about-card li { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.95rem; }
+    .about-card li::before { content: '▹'; color: var(--accent); font-weight: 700; }
+
+    /* Skills */
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .skill-group {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+      transition: border-color .2s, transform .2s;
+    }
+    .skill-group:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .skill-group h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 14px; color: var(--accent); }
+    .skill-group .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      font-size: 0.82rem; padding: 5px 11px; border-radius: 6px;
+      background: var(--bg-soft); border: 1px solid var(--border);
+      color: var(--text-muted); font-weight: 500;
+    }
+
+    /* Projects */
+    .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .project {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      display: flex; flex-direction: column; gap: 14px;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      position: relative; overflow: hidden;
+    }
+    .project:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 16px 40px var(--accent-glow); }
+    .project .num { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-dim); }
+    .project h3 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.015em; }
+    .project .desc { color: var(--text-muted); font-size: 0.95rem; flex: 1; }
+    .project .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .project .tag {
+      font-size: 0.74rem; padding: 3px 9px; border-radius: 5px;
+      background: var(--accent-glow); color: var(--accent);
+      border: 1px solid rgba(34,211,238,0.2); font-weight: 500;
+    }
+    .project .links { display: flex; gap: 14px; margin-top: 6px; }
+    .project .links a { font-size: 0.88rem; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
+    .project .links a svg { width: 14px; height: 14px; }
+
+    /* Contact */
+    .contact { text-align: center; }
+    .contact h2 { font-size: clamp(2rem, 4vw, 3rem); }
+    .contact p { color: var(--text-muted); max-width: 560px; margin: 16px auto 32px; font-size: 1.05rem; }
+    .contact-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .contact-links a {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 20px; border-radius: 10px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text); font-weight: 500; font-size: 0.92rem;
+      transition: border-color .2s, transform .15s;
+    }
+    .contact-links a:hover { border-color: var(--accent); transform: translateY(-2px); color: var(--text); }
+    .contact-links a svg { width: 18px; height: 18px; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border); padding: 32px 0;
+      text-align: center; color: var(--text-dim); font-size: 0.85rem;
+    }
+    footer .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-grid, .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(3,1fr); }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 520px) {
+      .stats { grid-template-columns: 1fr; }
+      .hero { padding: 80px 0 60px; }
+    }
+
+    /* Reveal animation */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s, transform .6s; }
+    .reveal.in { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="inner">
+      <div class="brand">Bishir<span>.</span>dev</div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">Let's talk</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">Available for work · Katsina, Nigeria</div>
+            <h1>Full-stack engineer building <span class="grad">production systems</span> that ship.</h1>
+            <p class="lede">
+              I design and build end-to-end products — web, mobile, and AI. From offline-first POS systems
+              and multi-vendor marketplaces to VTU platforms, AI receptionists, and ML pipelines. React on
+              the front, Node/Python on the back, Docker in between.
+            </p>
+            <div class="hero-actions">
+              <a href="#projects" class="btn btn-primary">View projects →</a>
+              <a href="#contact" class="btn btn-ghost">Get in touch</a>
+            </div>
+            <div class="stats">
+              <div class="stat"><div class="n">8+</div><div class="l">Production apps</div></div>
+              <div class="stat"><div class="n">3</div><div class="l">Platforms (web/mobile/AI)</div></div>
+              <div class="stat"><div class="n">433</div><div class="l">Tests (Content OS)</div></div>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div class="row"><span class="k">name</span><span class="v">Bishir Tijjani</span></div>
+            <div class="row"><span class="k">role</span><span class="v">Full-Stack Engineer</span></div>
+            <div class="row"><span class="k">location</span><span class="v">Katsina, Nigeria</span></div>
+            <div class="row"><span class="k">frontend</span><span class="v">React · Next.js · RN</span></div>
+            <div class="row"><span class="k">backend</span><span class="v">Node · Express · Python</span></div>
+            <div class="row"><span class="k">data</span><span class="v">Postgres · Mongo · Redis</span></div>
+            <div class="row"><span class="k">ai</span><span class="v">Claude · scikit-learn</span></div>
+            <div class="row"><span class="k">infra</span><span class="v">Docker · Nginx · Cloudflare</span></div>
+            <div class="row"><span class="k">status</span><span class="v str">Open to opportunities</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="tag">// 01 — about</div>
+          <h2>Engineer who ships end-to-end.</h2>
+          <p>I build products, not demos. From database schema to deployed UI, I own the whole stack.</p>
+        </div>
+        <div class="about-grid">
+          <div class="about-text reveal">
+            <p>
+              I'm a full-stack engineer based in Katsina, Nigeria, with a focus on <strong>production-grade
+              web, mobile, and AI systems</strong>. I've built and shipped offline-first POS platforms,
+              multi-vendor marketplaces, fintech wallets with double-entry ledgers, VTU/utility platforms,
+              AI-powered receptionists, and a zero-dependency content automation engine.
+            </p>
+            <p>
+              I care about <strong>reliability, correctness, and shipping</strong>. My projects include
+              multi-tenant architectures, real-time Socket.io feeds, BullMQ job queues, Prisma/Postgres
+              schemas, and React Native apps that run on iOS, Android, and web from one codebase.
+            </p>
+            <p>
+              Open to <strong>frontend, backend, full-stack, and mobile</strong> roles — remote or
+              on-site. Happy to talk about any of the projects below.
+            </p>
+          </div>
+          <div class="about-card reveal">
+            <h4>What I bring</h4>
+            <ul>
+              <li>End-to-end ownership (schema → API → UI → deploy)</li>
+              <li>Offline-first &amp; real-time architectures</li>
+              <li>Multi-tenant SaaS with RBAC</li>
+              <li>Mobile apps (React Native / Expo)</li>
+              <li>AI integration (Claude, OpenAI, ML pipelines)</li>
+              <li>Payments, wallets, and ledger systems</li>
+              <li>Docker, Nginx, Cloudflare, CI/CD</li>
+              <li>Testing (Jest, Vitest, Supertest, pytest)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="tag">// 02 — skills</div>
+          <h2>Tools I reach for.</h2>
+          <p>Grouped by layer. I'm comfortable across the whole stack.</p>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-group reveal">
+            <h4>Frontend</h4>
+            <div class="chips">
+              <span class="chip">React</span><span class="chip">Next.js</span><span class="chip">Vite</span>
+              <span class="chip">TypeScript</span><span class="chip">Redux Toolkit</span><span class="chip">Tailwind</span>
+              <span class="chip">React Router</span><span class="chip">Recharts</span><span class="chip">Konva</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <h4>Mobile</h4>
+            <div class="chips">
+              <span class="chip">React Native</span><span class="chip">Expo</span>
+              <span class="chip">iOS + Android + Web</span><span class="chip">Socket.io client</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <h4>Backend</h4>
+            <div class="chips">
+              <span class="chip">Node.js</span><span class="chip">Express</span><span class="chip">Python</span>
+              <span class="chip">Flask</span><span class="chip">Socket.io</span><span class="chip">BullMQ</span>
+              <span class="chip">REST APIs</span><span class="chip">Webhooks</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <h4>Data</h4>
+            <div class="chips">
+              <span class="chip">PostgreSQL</span><span class="chip">MongoDB</span><span class="chip">Redis</span>
+              <span class="chip">Prisma</span><span class="chip">Mongoose</span><span class="chip">SQLite</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <h4>AI / ML</h4>
+            <div class="chips">
+              <span class="chip">Claude (Anthropic)</span><span class="chip">OpenAI</span>
+              <span class="chip">scikit-learn</span><span class="chip">Regression</span>
+              <span class="chip">Prompt engineering</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <h4>Infra &amp; Tools</h4>
+            <div class="chips">
+              <span class="chip">Docker</span><span class="chip">Nginx</span><span class="chip">Cloudflare</span>
+              <span class="chip">Vercel</span><span class="chip">GitHub Actions</span>
+              <span class="chip">Git</span><span class="chip">Linux</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="tag">// 03 — projects</div>
+          <h2>Things I've shipped.</h2>
+          <p>Production systems with real users, real data, and real constraints.</p>
+        </div>
+        <div class="projects-grid">
+          <article class="project reveal">
+            <div class="num">01</div>
+            <h3>Codeket Restaurant</h3>
+            <p class="desc">Offline-first, multi-tenant restaurant POS + KDS + inventory. 40 controllers, 34 Mongoose models, real-time WebSocket fan-out, delta sync, idempotency, floor plans on a Konva canvas. Works with no internet.</p>
+            <div class="tags">
+              <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">MongoDB</span>
+              <span class="tag">Redis</span><span class="tag">WebSocket</span><span class="tag">PWA</span>
+            </div>
+            <div class="links">
+              <a href="https://github.com/bishirtijjani/restaurant-management-system">GitHub →</a>
+            </div>
+          </article>
+
+          <article class="project reveal">
+            <div class="num">02</div>
+            <h3>Chat &amp; Wallet</h3>
+            <p class="desc">Social savings (ROSCA/adashe) platform with a double-entry, append-only ledger. Phone + OTP auth, Socket.io real-time chat, scheduler worker, reputation &amp; dispute system. One Expo app for iOS, Android, and web.</p>
+            <div class="tags">
+              <span class="tag">Expo</span><span class="tag">Node.js</span><span class="tag">PostgreSQL</span>
+              <span class="tag">Socket.io</span><span class="tag">TypeScript</span>
+            </div>
+            <div class="links">
+              <a href="https://github.com/bishirtijjani/chat-and-wallet">GitHub →</a>
+            </div>
+          </article>
+
+          <article class="project reveal">
+            <div class="num">03</div>
+            <h3>iPrime (VTU &amp; Logistics)</h3>
+            <p class="desc">React Native super-app for Katsina State — digital wallet, utility bill payments, and delivery logistics. KatPay virtual accounts, AlRahuz VTU, Google Maps routing, Firebase push, BullMQ queues, Socket.io tracking.</p>
+            <div class="tags">
+              <span class="tag">React Native</span><span class="tag">Expo</span><span class="tag">Express</span>
+              <span class="tag">Prisma</span><span class="tag">PostgreSQL</span><span class="tag">Redis</span>
+            </div>
+            <div class="links">
+              <a href="https://github.com/bishirtijjani/vtu-logistics">GitHub →</a>
+            </div>
+          </article>
+
+          <article class="project reveal">
+            <div class="num">04</div>
+            <h3>MySooq Ecommerce</h3>
+            <p class="desc">Multi-vendor marketplace with admin, vendor, and customer dashboards. React + Prisma + PostgreSQL + Redis/BullMQ, Cloudinary image uploads, KatPay + Paystack payments, Firebase push notifications.</p>
+            <div class="tags">
+              <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Prisma</span>
+              <span class="tag">PostgreSQL</span><span class="tag">Redis</span>
+            </div>
+            <div class="links">
+              <a href="https://github.com/bishirtijjani/ecommerce">GitHub →</a>
+            </div>
+          </article>
+
+          <article class="project reveal">
+            <div class="num">05</div>
+            <h3>Content OS</h3>
+            <p class="desc">Full content automation engine — 5 engines, 17-table state machine, 58 diagram layouts, human approval gates. Zero runtime dependencies (Node 22 built-in SQLite). 433 tests. Agent-orchestrated, DB-as-contract architecture.</p>
+            <div class="tags">
+              <span class="tag">Node.js</span><span class="tag">SQLite</span><span class="tag">Zero deps</span>
+              <span class="tag">State machine</span><span class="tag">CLI tools</span>
+            </div>
+            <div class="links">
+              <a href="https://github.com/bishirtijjani/content-os">GitHub →</a>
+            </div>
+          </article>
+
+          <article class="project reveal">
+            <div class="num">06</div>
+            <h3>AI Receptionist</h3>
+            <p class="desc">Claude (Anthropic) powered WhatsApp &amp; Instagram receptionist for med spas. Answers service/price questions, proposes booking slots, collects intake, hands off to humans. Hard-locked prices so the bot can't invent info.</p>
+            <div class="tags">
+              <span class="tag">Claude</span><span class="tag">Node.js</span><span class="tag">PostgreSQL</span>
+              <span class="tag">WhatsApp API</span><span class="tag">Express</span>
+            </div>
+            <div class="links">
+              <a href="https://github.com/bishirtijjani/ai-receptionist">GitHub →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container contact">
+        <div class="section-head reveal">
+          <div class="tag">// 04 — contact</div>
+          <h2>Let's build something.</h2>
+          <p>Open to frontend, backend, full-stack, and mobile roles. Remote or on-site. Reach out and I'll reply within a day.</p>
+        </div>
+        <div class="contact-links reveal">
+          <a href="mailto:bishirtijjani247@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+            Email
+          </a>
+          <a href="https://github.com/bishirtijjani" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/bishir" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://bishir-tm.web.app" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Portfolio
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>Designed &amp; built by <span class="mono">Bishir Tijjani</span> · Katsina, Nigeria · <span class="mono">2026</span></p>
+    </div>
+  </footer>
+
+  <script>
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
+EOF
+echo "HTML site written"
