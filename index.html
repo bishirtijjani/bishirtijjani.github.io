@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,25 +10,42 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0b0f19;
-      --bg-soft: #111827;
-      --bg-card: #161e2e;
-      --bg-card-hover: #1c2638;
-      --border: #1f2a3d;
-      --border-soft: #263347;
-      --text: #e6edf3;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
-      --accent: #22d3ee;
-      --accent-2: #818cf8;
-      --accent-glow: rgba(34, 211, 238, 0.15);
-      --accent-glow-2: rgba(129, 140, 248, 0.12);
-      --success: #34d399;
-      --warning: #fbbf24;
-      --radius: 14px;
-      --radius-sm: 8px;
-      --shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+      --bg: #ffffff;
+      --bg-soft: #f5f5f5;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f9f9f9;
+      --border: #e5e5e5;
+      --border-soft: #eeeeee;
+      --text: #111111;
+      --text-muted: #555555;
+      --text-dim: #888888;
+      --accent: #111111;
+      --accent-2: #333333;
+      --accent-glow: transparent;
+      --accent-glow-2: transparent;
+      --success: #16a34a;
+      --warning: #ca8a04;
+      --radius: 8px;
+      --radius-sm: 6px;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
       --maxw: 1180px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #111111;
+      --bg-soft: #1a1a1a;
+      --bg-card: #1a1a1a;
+      --bg-card-hover: #222222;
+      --border: #2a2a2a;
+      --border-soft: #252525;
+      --text: #eeeeee;
+      --text-muted: #999999;
+      --text-dim: #666666;
+      --accent: #eeeeee;
+      --accent-2: #cccccc;
+      --success: #4ade80;
+      --warning: #facc15;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,23 +57,8 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      transition: background 0.2s, color 0.2s;
     }
-
-    /* Background grid + glow */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(900px 500px at 10% -10%, var(--accent-glow), transparent 60%),
-        radial-gradient(800px 500px at 90% 10%, var(--accent-glow-2), transparent 60%),
-        linear-gradient(var(--bg) 1px, transparent 1px) 0 0 / 40px 40px,
-        linear-gradient(90deg, var(--bg) 1px, transparent 1px) 0 0 / 40px 40px;
-      opacity: 0.6;
-      pointer-events: none;
-      z-index: 0;
-    }
-    body > * { position: relative; z-index: 1; }
 
     a { color: var(--accent); text-decoration: none; transition: color .2s; }
     a:hover { color: #67e8f9; }
@@ -67,7 +69,7 @@
     nav {
       position: sticky; top: 0; z-index: 50;
       backdrop-filter: blur(12px);
-      background: rgba(11, 15, 25, 0.7);
+      background: var(--bg);
       border-bottom: 1px solid var(--border);
     }
     nav .inner {
@@ -80,11 +82,22 @@
     .nav-links a { color: var(--text-muted); font-size: 0.92rem; font-weight: 500; }
     .nav-links a:hover { color: var(--text); }
     .nav-cta {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #0b0f19 !important; padding: 8px 16px; border-radius: 999px;
+      background: var(--accent);
+      color: var(--bg) !important; padding: 8px 16px; border-radius: 999px;
       font-weight: 600; font-size: 0.88rem;
     }
-    .nav-cta:hover { opacity: 0.9; color: #0b0f19 !important; }
+    .nav-cta:hover { opacity: 0.9; color: var(--bg) !important; }
+    .theme-toggle {
+      background: none; border: 1px solid var(--border); border-radius: 8px;
+      padding: 6px 8px; cursor: pointer; color: var(--text-muted);
+      display: flex; align-items: center; transition: border-color .2s, color .2s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--text); }
+    .theme-toggle svg { width: 16px; height: 16px; }
+    .icon-sun { display: none; }
+    .icon-moon { display: block; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="dark"] .icon-moon { display: none; }
 
     /* Hero */
     .hero { padding: 110px 0 80px; }
@@ -103,8 +116,8 @@
       margin-bottom: 20px;
     }
     h1 .grad {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
+      color: var(--text);
+      font-weight: 800;
     }
     .hero p.lede {
       font-size: 1.15rem; color: var(--text-muted); max-width: 560px;
@@ -118,10 +131,10 @@
       border: 1px solid transparent;
     }
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #0b0f19;
+      background: var(--accent);
+      color: var(--bg);
     }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px var(--accent-glow); color: #0b0f19; }
+    .btn-primary:hover { transform: translateY(-1px); color: var(--bg); }
     .btn-ghost {
       background: var(--bg-card); color: var(--text); border-color: var(--border);
     }
@@ -258,6 +271,10 @@
         <li><a href="#projects">Projects</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
       <a href="#contact" class="nav-cta">Let's talk</a>
     </div>
   </nav>
@@ -267,7 +284,7 @@
       <div class="container">
         <div class="hero-grid">
           <div>
-            <div class="eyebrow">Available for work · Katsina, Nigeria</div>
+            <div class="eyebrow">Available for work</div>
             <h1>Full-stack engineer building <span class="grad">production systems</span> that ship.</h1>
             <p class="lede">
               I design and build end-to-end products — web, mobile, and AI. From offline-first POS systems
@@ -287,7 +304,7 @@
           <div class="hero-card">
             <div class="row"><span class="k">name</span><span class="v">Bishir Tijjani</span></div>
             <div class="row"><span class="k">role</span><span class="v">Full-Stack Engineer</span></div>
-            <div class="row"><span class="k">location</span><span class="v">Katsina, Nigeria</span></div>
+            <div class="row"><span class="k">location</span><span class="v">Remote</span></div>
             <div class="row"><span class="k">frontend</span><span class="v">React · Next.js · RN</span></div>
             <div class="row"><span class="k">backend</span><span class="v">Node · Express · Python</span></div>
             <div class="row"><span class="k">data</span><span class="v">Postgres · Mongo · Redis</span></div>
@@ -309,7 +326,7 @@
         <div class="about-grid">
           <div class="about-text reveal">
             <p>
-              I'm a full-stack engineer based in Katsina, Nigeria, with a focus on <strong>production-grade
+              I'm a full-stack engineer with a focus on <strong>production-grade
               web, mobile, and AI systems</strong>. I've built and shipped offline-first POS platforms,
               multi-vendor marketplaces, fintech wallets with double-entry ledgers, VTU/utility platforms,
               AI-powered receptionists, and a zero-dependency content automation engine.
@@ -519,11 +536,25 @@
 
   <footer>
     <div class="container">
-      <p>Designed &amp; built by <span class="mono">Bishir Tijjani</span> · Katsina, Nigeria · <span class="mono">2026</span></p>
+      <p>Designed &amp; built by <span class="mono">Bishir Tijjani</span> · <span class="mono">2026</span></p>
     </div>
   </footer>
 
   <script>
+    // Theme toggle
+    (function() {
+      const html = document.documentElement;
+      const stored = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = stored || (prefersDark ? 'dark' : 'light');
+      html.setAttribute('data-theme', theme);
+      document.getElementById('themeToggle').addEventListener('click', function() {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
+    })();
     // Reveal on scroll
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
@@ -532,5 +563,3 @@
   </script>
 </body>
 </html>
-EOF
-echo "HTML site written"
